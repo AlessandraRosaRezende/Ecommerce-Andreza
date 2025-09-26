@@ -34,3 +34,15 @@ export async function createUser(user: IUser): Promise<IUser | null> {
     return null
   }
 }
+
+export async function getUserById(id: string): Promise<IUser | null>{
+  try {
+    const foundUser = await User.findById(id);
+    if (!foundUser) return null;
+    
+    return foundUser;
+  } catch (error) {
+    console.log(error);
+    return null
+  }
+}
