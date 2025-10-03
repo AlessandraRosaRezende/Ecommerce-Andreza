@@ -22,22 +22,10 @@ export async function getUsers(): Promise<IUser[] | null> {
   }
 }
 
-export async function createUser(user: IUser): Promise<IUser | null> {
-  try {
-    const extingUser = await User.findOne({ email: user.email });
-    if (extingUser) return null;
-    
-    const createdUser = await User.create(user);
-    return createdUser;
-  } catch (error) {
-    console.log(error);
-    return null
-  }
-}
-
 export async function getUserById(id: string): Promise<IUser | null>{
   try {
     const foundUser = await User.findById(id);
+    console.log(id);
     if (!foundUser) return null;
     
     return foundUser;

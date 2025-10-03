@@ -7,7 +7,6 @@ const router = Router();
 
 router.get("/", userController.getUsers);
 router.get("/sem-age", userController.getUsersSemAge);
-router.post("/", validate(userSchema), userController.createUser);
 router.get("/:id", userController.getUserById);
 
 export default router;
