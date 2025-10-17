@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { IUser } from "../interfaces/IUser.js";
-import { PassThrough } from "stream";
 
 const userSchema = new mongoose.Schema({
   name: {

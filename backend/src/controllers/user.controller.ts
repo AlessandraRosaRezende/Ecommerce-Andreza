@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import * as userService from "../services/user.service.js";
-import { verifyToken } from "../middlewares/auth.middleware.js";
-import { resolve } from "path/posix";
 
 export async function getUsersSemAge(req: Request, res: Response) {
   try {
@@ -13,19 +11,9 @@ export async function getUsersSemAge(req: Request, res: Response) {
 }
 
 export async function getUsers(req: Request, res: Response) {
-  const { authorization } = req.headers;
-  const token = authorization?.split(" ")[1]; // [Bearer token]
+  const role = req.user?.role;
 
-  if (!token) {
-    return res.status(401).json({ message: "Token not found" });
-  }
-  const payload = await verifyToken(token);
-
-  const userId = payload?.id;
-  const role = payload?.role;
-  console.log(userId, role);
-
-  if (payload?.role !== "admin") {
+  if (role !== "admin") {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
@@ -38,6 +26,12 @@ export async function getUsers(req: Request, res: Response) {
 }
 
 export async function getUserById(req: Request, res: Response) {
+  const role = req.user?.role;
+
+  if (role !== "admin") {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
   try {
     const user = await userService.getUserById(req.params.id);
     if (!user) {

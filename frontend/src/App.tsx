@@ -23,6 +23,23 @@ export default function App() {
   const [errors, setErrors] = useState<any>({});
   const [success, setSuccess] = useState("");
 
+  const login = await fetch("http://localhost:3001/login", {
+    method: "POST",
+    body: JSON.stringify({ email: "email", password: "123456" }),
+  });
+  const response = login.json();
+  localStorage.setItem("token", await response);
+
+  const token = localStorage.getItem("token");
+  const res = await fetch("http://localhost:3001/users", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+
+
   async function fetchUsers() {
     try {
       const res = await fetch('http://localhost:3001/users')
